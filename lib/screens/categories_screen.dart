@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/category.dart';
 import '../services/meal_service.dart';
 import '../widgets/category_card.dart';
+import 'meals_screen.dart';
 
 class CategoriesScreen extends StatefulWidget {
   @override
@@ -68,9 +69,8 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                 final filtered = _query.isEmpty
                     ? allCategories
                     : allCategories
-                    .where((c) => c.name
-                    .toLowerCase()
-                    .contains(_query.toLowerCase()))
+                    .where((c) =>
+                    c.name.toLowerCase().contains(_query.toLowerCase()))
                     .toList();
 
                 if (filtered.isEmpty)
@@ -84,8 +84,12 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                     return CategoryCard(
                       category: cat,
                       onTap: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('Meal screen is not implemented yet.')));
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) =>
+                                MealsScreen(category: cat.name),
+                          ),
+                        );
                       },
                     );
                   },
