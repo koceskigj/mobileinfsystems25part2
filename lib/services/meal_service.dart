@@ -10,7 +10,7 @@ class MealService {
   static const base = 'https://www.themealdb.com/api/json/v1/1';
 
   Future<List<Category>> fetchCategories() async {
-    final res = await http.get(Uri.parse('\$base/categories.php'));
+    final res = await http.get(Uri.parse('$base/categories.php'));
     if (res.statusCode == 200) {
       final data = json.decode(res.body);
       final list = (data['categories'] as List).map((e) => Category.fromJson(e)).toList();
@@ -20,7 +20,7 @@ class MealService {
   }
 
   Future<List<Meal>> fetchMealsByCategory(String category) async {
-    final res = await http.get(Uri.parse('\$base/filter.php?c=\${Uri.encodeComponent(category)}'));
+    final res = await http.get(Uri.parse('$base/filter.php?c=${Uri.encodeComponent(category)}'));
     if (res.statusCode == 200) {
       final data = json.decode(res.body);
       if (data['meals'] == null) return [];
@@ -31,7 +31,7 @@ class MealService {
   }
 
   Future<List<Meal>> searchMeals(String query) async {
-    final res = await http.get(Uri.parse('\$base/search.php?s=\${Uri.encodeComponent(query)}'));
+    final res = await http.get(Uri.parse('$base/search.php?s=${Uri.encodeComponent(query)}'));
     if (res.statusCode == 200) {
       final data = json.decode(res.body);
       if (data['meals'] == null) return [];
@@ -42,7 +42,7 @@ class MealService {
   }
 
   Future<MealDetail> lookupMeal(String id) async {
-    final res = await http.get(Uri.parse('\$base/lookup.php?i=\${Uri.encodeComponent(id)}'));
+    final res = await http.get(Uri.parse('$base/lookup.php?i=${Uri.encodeComponent(id)}'));
     if (res.statusCode == 200) {
       final data = json.decode(res.body);
       final jsonMeal = data['meals'][0];
@@ -52,7 +52,7 @@ class MealService {
   }
 
   Future<MealDetail> randomMeal() async {
-    final res = await http.get(Uri.parse('\$base/random.php'));
+    final res = await http.get(Uri.parse('$base/random.php'));
     if (res.statusCode == 200) {
       final data = json.decode(res.body);
       final jsonMeal = data['meals'][0];
