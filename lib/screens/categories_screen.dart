@@ -3,6 +3,7 @@ import '../models/category.dart';
 import '../services/meal_service.dart';
 import '../widgets/category_card.dart';
 import 'meals_screen.dart';
+import 'meal_detail_screen.dart';
 
 class CategoriesScreen extends StatefulWidget {
   @override
@@ -20,12 +21,26 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
   }
 
   void _openRandom() async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => Center(child: CircularProgressIndicator()),
+    );
+
     try {
       final meal = await mealService.randomMeal();
-      print('Random meal ID: ${meal.id}');
+      Navigator.of(context).pop();
+
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (_) => MealDetailScreen(mealId: meal.id),
+        ),
+      );
     } catch (e) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Failed to load random meal')));
+      Navigator.of(context).pop();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to load random meal')),
+      );
     }
   }
 
@@ -37,8 +52,8 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
         actions: [
           IconButton(
             onPressed: _openRandom,
-            icon: Icon(Icons.casino),
-            tooltip: 'Random recipe',
+            icon: Icon(Icons.help_outline, color: Colors.orange),
+            tooltip: 'Random Recipe',
           ),
         ],
       ),
